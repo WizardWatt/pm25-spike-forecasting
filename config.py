@@ -16,7 +16,7 @@ THRESHOLD = 90.0       # spike = PM2.5 above this (CPCB Poor band)
 MAX_PM25 = 1000.0      # readings above this are treated as sensor errors
 STUCK_HOURS = 12       # identical readings for this many hours in a row = stuck sensor
 MAX_FILL_GAP = 3       # only interpolate gaps up to this many hours
-EXTRA_POLLUTANTS = ["PM10", "NO2", "CO", "O3"]
+EXTRA_POLLUTANTS = []
 EXTRA_MAX_MISSING = 0.40   # use an extra pollutant only if under 40% missing at both stations
 
 # Chronological split (boundaries are start-inclusive, end-exclusive)
@@ -28,6 +28,6 @@ DIWALI_DATES = ["2018-11-07", "2019-10-27"]
 DIWALI_WINDOW_DAYS = 3
 
 # Features
-LAGS = [1, 2, 3, 6, 12, 24, 48]
+LAGS = [1, 2, 3, 6, 12, 24]
 ROLL_WINDOWS = [6, 24]
 EXTRA_LAGS = [6, 24]

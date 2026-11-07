@@ -53,7 +53,7 @@ def build_features(g, extras):
     out["hour_cos"] = np.cos(2 * np.pi * hour / 24)
     out["month_sin"] = np.sin(2 * np.pi * (month - 1) / 12)
     out["month_cos"] = np.cos(2 * np.pi * (month - 1) / 12)
-    out["dayofweek"] = g["Datetime"].dt.dayofweek
+    out["dayofweek"] = g["Datetime"].dt.day_of_week
     out["is_weekend"] = (out["dayofweek"] >= 5).astype(int)
     return out
 

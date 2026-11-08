@@ -36,3 +36,15 @@ def test_end_to_end_perfect_and_silent():
     silent = perfect.assign(spike_prob=0.0)
     r = evaluate(silent, truth)["KA003"]
     assert r["recall"] == 0 and r["episode_recall"] == 0 and r["false_alarm_rate"] == 0
+
+
+def test_episodes_only_in_evaluated_period():
+    idx = pd.date_range("2018-01-01", "2019-12-31 23:00", freq="h")
+    pm = pd.Series(50.0, index=idx)
+    pm.loc["2018-06-01 10:00"] = 120      # inside the evaluated period
+    pm.loc["2019-06-01 10:00"] = 120      # in a year that was never forecast
+    al = pd.Series(False, index=idx)
+    al.loc["2018-06-01 07:00"] = True
+    r = episode_metrics(pm, al, start="2018-01-01 00:00", end="2018-12-31 23:00")
+    assert r["n_episodes"] == 1 and r["episodes_detected"] == 1 and r["mean_lead_h"] == 3
+    assert episode_metrics(pm, al)["n_episodes"] == 2          # without the range both count

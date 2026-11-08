@@ -46,13 +46,20 @@ def spike_metrics(y_spike, alert):
             "TP": tp, "FP": fp, "FN": fn, "TN": tn}
 
 
-def episode_metrics(pm25: pd.Series, alert: pd.Series, threshold=90, horizon=6):
-    """pm25, alert: Series indexed by Datetime (one station). alert is bool."""
+def episode_metrics(pm25: pd.Series, alert: pd.Series, threshold=90, horizon=6, start=None, end=None):
+    """pm25, alert: Series indexed by Datetime (one station). alert is bool.
+    start/end = first/last forecast issue time evaluated: only episodes whose whole alert window
+    [onset-horizon, onset-1h] lies inside that range are counted (otherwise episodes from years
+    that were never forecast would count as misses)."""
     idx = pd.date_range(pm25.index.min(), pm25.index.max(), freq="h")
     pm = pm25.reindex(idx)
     al = alert.reindex(idx).fillna(False).astype(bool)   # no forecast -> no alert
     exceed = pm > threshold                               # NaN -> False
     onset = exceed & ~exceed.shift(1, fill_value=False)
+    if start is not None:
+        onset &= idx >= pd.Timestamp(start) + pd.Timedelta(hours=horizon)
+    if end is not None:
+        onset &= idx <= pd.Timestamp(end) + pd.Timedelta(hours=1)
     leads = []
     for s in idx[onset.values]:
         win = al.loc[s - pd.Timedelta(hours=horizon): s - pd.Timedelta(hours=1)]
@@ -88,7 +95,8 @@ def evaluate(pred: pd.DataFrame, truth: pd.DataFrame, prob_threshold=0.5,
                 res.update(fa)
                 alert_s = pd.Series(alert.values, index=pd.DatetimeIndex(m["Datetime"]))
                 pm = t.set_index("Datetime")["PM2.5"]
-                res.update(episode_metrics(pm, alert_s, spike_threshold, horizon))
+                res.update(episode_metrics(pm, alert_s, spike_threshold, horizon,
+                                           start=m["Datetime"].min(), end=m["Datetime"].max()))
             else:
                 res.update({k: fa[k] for k in ("false_alarm_rate", "false_alarm_ratio", "FP", "TN")})
         out[st] = res

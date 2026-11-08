@@ -3,11 +3,11 @@
 Needs from Person A: ONLY the cleaned file (Datetime, StationId, PM2.5, y_reg, y_spike).
 
 Step 1 - tune on 2018 (fit 2015-17, early stopping on 2018, picks alert threshold on 2018):
-  python train_gru.py --clean data/clean.csv --station KA003 --out preds/
+  python train_gru.py --clean data/processed/features.csv --station KA003 --out preds/
 Step 2 - repeat for the second station (separate model):
-  python train_gru.py --clean data/clean.csv --station KA009 --out preds/
+  python train_gru.py --clean data/processed/features.csv --station KA009 --out preds/
 Step 3 - ONCE, at the very end (refit 2015-18, fixed epochs + threshold from step 1, score 2019):
-  python train_gru.py --clean data/clean.csv --station KA003 --out preds/ --final-test
+  python train_gru.py --clean data/processed/features.csv --station KA003 --out preds/ --final-test
 
 Outputs in --out: {tag}_{station}_{val|test}.csv (shared prediction format, no intervals yet),
 {tag}_{station}_meta.json (best epoch, threshold, history), {tag}_{station}.pt (weights).
@@ -19,6 +19,7 @@ import pandas as pd
 import eval_config as C
 from gru_data import make_splits, predictions_frame
 from evaluate import evaluate, common_rows
+from data_io import load_clean
 
 
 # ---------------------------------------------------------------- torch-free helpers
@@ -160,7 +161,7 @@ def train(data_tr, data_ev, scaler, a, epochs, early_stop):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--clean", required=True)
+    ap.add_argument("--clean", default=str(C.FEATURES_PATH))
     ap.add_argument("--station", default=C.PRIMARY_STATION)
     ap.add_argument("--out", default="preds")
     ap.add_argument("--tag", default="gru")
@@ -181,7 +182,7 @@ def main():
     a = ap.parse_args()
 
     import torch
-    clean = pd.read_csv(a.clean, parse_dates=["Datetime"])
+    clean = load_clean(a.clean)
     os.makedirs(a.out, exist_ok=True)
     stem = os.path.join(a.out, f"{a.tag}_{a.station}")
     split = "test" if a.final_test else "val"

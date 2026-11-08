@@ -4,19 +4,15 @@ Row convention: a row is the ISSUE time t. y_true = PM2.5 at t+6 (y_reg), y_pred
 Spike alert rule for baselines: alert if the forecast exceeds the spike threshold (binary spike_prob).
 
 Usage:
-  python baselines.py --clean data/clean.csv --out preds/            # fit 2015-17, score 2018 only
-  python baselines.py --clean data/clean.csv --out preds/ --final-test   # refit 2015-18, score 2019 (do ONCE)
+  python baselines.py --clean data/processed/features.csv --out preds/            # fit 2015-17, score 2018 only
+  python baselines.py --clean data/processed/features.csv --out preds/ --final-test   # refit 2015-18, score 2019 (do ONCE)
 """
 import argparse, os
 import numpy as np
 import pandas as pd
 import eval_config as C
 from evaluate import evaluate, common_rows
-
-
-def load_clean(path):
-    df = pd.read_csv(path, parse_dates=["Datetime"])
-    return df.sort_values(["StationId", "Datetime"]).reset_index(drop=True)
+from data_io import load_clean
 
 
 def period(df, start, end):
@@ -79,7 +75,7 @@ def summarize(preds, clean):
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("--clean", required=True)
+    ap.add_argument("--clean", default=str(C.FEATURES_PATH))
     ap.add_argument("--out", default="preds")
     ap.add_argument("--final-test", action="store_true", help="refit 2015-18 and score 2019 (touch once)")
     a = ap.parse_args()

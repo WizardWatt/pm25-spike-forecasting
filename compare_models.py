@@ -17,7 +17,7 @@ from evaluate import evaluate, common_rows
 from shared_format import load_preds, _path
 
 DEFAULT_MODELS = ["persistence", "hist_avg", "naive_alarm", "xgb", "gru"]
-COLS = ["model", "station", "threshold", "n", "base_rate", "MAE", "RMSE", "recall", "precision", "false_alarm_rate",
+COLS = ["model", "station", "threshold", "n", "base_rate", "MAE", "RMSE", "coverage", "mean_width", "recall", "precision", "false_alarm_rate",
         "false_alert_runs_per_week", "n_episodes", "episode_recall", "short_n", "short_recall", "long_n", "long_recall"]
 
 

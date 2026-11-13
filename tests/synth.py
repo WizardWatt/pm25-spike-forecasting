@@ -2,7 +2,7 @@ import numpy as np, pandas as pd
 
 def make_clean(station="KA003", seed=0, shift_2018=40.0):
     rng = np.random.default_rng(seed)
-    idx = pd.date_range("2015-01-01", "2019-12-31 23:00", freq="h")
+    idx = pd.date_range("2015-01-01", "2020-07-31 23:00", freq="h")
     pm = 45 + 15 * np.sin(2 * np.pi * idx.hour / 24) + rng.gamma(2, 8, len(idx))
     pm = pm + np.where(idx.year == 2018, shift_2018, 0)
     pm = pd.Series(pm, index=idx)

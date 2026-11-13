@@ -1,0 +1,29 @@
+KA009 test: train windows 22253, eval windows 11304, train spike rate 0.131
+{'epoch': 1, 'train_loss': 0.45889958364156874}
+{'epoch': 2, 'train_loss': 0.3335458285936167}
+{'epoch': 3, 'train_loss': 0.31223428331321207}
+{'epoch': 4, 'train_loss': 0.30272606817148073}
+{'epoch': 5, 'train_loss': 0.29568014411059934}
+{'epoch': 6, 'train_loss': 0.2911489770149202}
+{'epoch': 7, 'train_loss': 0.28721416414397405}
+{'epoch': 8, 'train_loss': 0.2834842699552147}
+{'epoch': 9, 'train_loss': 0.2794900304806804}
+{'epoch': 10, 'train_loss': 0.2773834071239504}
+{'epoch': 11, 'train_loss': 0.27496388838694874}
+{'epoch': 12, 'train_loss': 0.27315971157001506}
+{'epoch': 13, 'train_loss': 0.2719498708431026}
+{'epoch': 14, 'train_loss': 0.2700207681582064}
+{'epoch': 15, 'train_loss': 0.2697100919782138}
+{'epoch': 16, 'train_loss': 0.2682032515703949}
+{'epoch': 17, 'train_loss': 0.26631415649911705}
+{'epoch': 18, 'train_loss': 0.26596644973760775}
+{'epoch': 19, 'train_loss': 0.2647248657747306}
+{'epoch': 20, 'train_loss': 0.2633732457027132}
+{'epoch': 21, 'train_loss': 0.26328333772627505}
+saved C:\Users\nikhi\Documents\Engineering\Coding\Projects\sic_project_git\pm25-spike-forecasting\outputs\predictions\gru_KA009.csv
+alert threshold (from 2018): 0.31
+      model station    n    MAE   RMSE  recall  precision  false_alarm_rate  false_alert_runs_per_week  n_episodes  episode_recall
+        gru   KA009 7247 13.123 38.189   0.683      0.437             0.089                      1.611          90           0.644
+persistence   KA009 7247 19.592 51.088   0.318      0.750             0.011                      0.364          90           0.067
+   hist_avg   KA009 7247 20.250 42.435   0.000        NaN             0.000                      0.000          90           0.000
+naive_alarm   KA009 7247 19.592 51.088   0.480      0.358             0.088                      3.222          90           0.656

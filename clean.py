@@ -63,6 +63,9 @@ def clean_station(g, pollutants):
     too_high = g["PM2.5"] > cfg.MAX_PM25
     stats["pm25_above_max"] = int(too_high.sum())
     g.loc[too_high, "PM2.5"] = np.nan
+    cap_values = g["PM2.5"].round(2).isin(cfg.CAP_VALUES)
+    stats["pm25_cap_value"] = int(cap_values.sum())
+    g.loc[cap_values, "PM2.5"] = np.nan
     stuck = stuck_mask(g["PM2.5"], cfg.STUCK_HOURS)
     stats["pm25_stuck_hours"] = int(stuck.sum())
     g.loc[stuck, "PM2.5"] = np.nan

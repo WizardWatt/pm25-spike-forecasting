@@ -14,6 +14,7 @@ THRESHOLD = 90.0       # spike = PM2.5 above this (CPCB Poor band)
 
 # Cleaning rules
 MAX_PM25 = 1000.0      # readings above this are treated as sensor errors
+CAP_VALUES = (999.99, 749.99)
 STUCK_HOURS = 12       # identical readings for this many hours in a row = stuck sensor
 MAX_FILL_GAP = 3       # only interpolate gaps up to this many hours
 EXTRA_POLLUTANTS = []

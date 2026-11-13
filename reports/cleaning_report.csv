@@ -1,0 +1,3 @@
+,rows_raw,duplicate_timestamps,hours_inserted,negative_values,pm25_above_max,pm25_stuck_hours,pm25_missing_after_pct,pm25_imputed_hours,longest_pm25_gap_hours
+KA003,48192.0,0.0,0.0,0.0,0.0,194.0,22.8,426.0,1883.0
+KA009,48192.0,0.0,0.0,0.0,0.0,653.0,22.8,259.0,2140.0

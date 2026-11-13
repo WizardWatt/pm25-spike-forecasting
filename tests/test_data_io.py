@@ -7,14 +7,7 @@ from baselines import run
 from gru_data import make_splits
 from synth import make_clean
 
-def a_style_features(station):
-    d = make_clean(station).rename(columns={"PM2.5": "pm25_now"})
-    t = d["Datetime"]
-    d["split"] = np.select([t < cfg.TRAIN_END, t < cfg.VAL_END, t < cfg.TEST_END], ["train", "val", "test"], "after_test")
-    d["model_ready"] = d[["pm25_now", "y_reg", "y_spike"]].notna().all(axis=1)
-    d["target_imputed"] = False
-    d["pm25_lag1"] = d["pm25_now"].shift(1)
-    return d
+from synth import make_features as a_style_features
 
 def test_all():
     feats = pd.concat([a_style_features("KA003"), a_style_features("KA009")], ignore_index=True)
@@ -28,8 +21,8 @@ def test_all():
             mine = ((clean.Datetime >= a) & (clean.Datetime <= b)).sum()
             hers = (clean["split"] == name).sum()
             assert mine == hers, (name, mine, hers)
-        preds = run(clean)
-        assert set(preds) == {"persistence", "hist_avg"}
+        preds, _ = run(clean)
+        assert set(preds) == {"persistence", "hist_avg", "naive_alarm"}
         d = make_splits(clean, "KA003", "val")
         assert len(d["train"]["X"]) > 0 and len(d["eval"]["X"]) > 0
         # clean_hourly-style file (no targets) gives a clear error

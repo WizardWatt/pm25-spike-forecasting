@@ -8,7 +8,7 @@ import pandas as pd
 import eval_config as C
 
 NEEDED = ["Datetime", "StationId", "PM2.5", "y_reg", "y_spike"]
-OPTIONAL = ["split", "model_ready", "target_imputed"]
+OPTIONAL = ["split", "model_ready", "target_imputed", "is_diwali", "is_lockdown"]
 
 
 def load_clean(path=None):

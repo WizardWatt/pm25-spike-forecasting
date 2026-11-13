@@ -1,15 +1,15 @@
 """Train a GRU (two heads: PM2.5 at t+6 regression + spike logit) with the shared pipeline.
 
-Needs from Person A: ONLY the cleaned file (Datetime, StationId, PM2.5, y_reg, y_spike).
+Needs from Person A: ONLY data/processed/features.csv (read through data_io.load_clean).
 
 Step 1 - tune on 2018 (fit 2015-17, early stopping on 2018, picks alert threshold on 2018):
-  python train_gru.py --clean data/processed/features.csv --station KA003 --out preds/
+  python train_gru.py --clean data/processed/features.csv --station KA003
 Step 2 - repeat for the second station (separate model):
-  python train_gru.py --clean data/processed/features.csv --station KA009 --out preds/
+  python train_gru.py --clean data/processed/features.csv --station KA009
 Step 3 - ONCE, at the very end (refit 2015-18, fixed epochs + threshold from step 1, score 2019):
-  python train_gru.py --clean data/processed/features.csv --station KA003 --out preds/ --final-test
+  python train_gru.py --clean data/processed/features.csv --station KA003 --final-test
 
-Outputs in --out: {tag}_{station}_{val|test}.csv (shared prediction format, no intervals yet),
+Outputs:  outputs/predictions/{tag}_{station}.csv (Person A's format; 'train_only' rows for 2018, 'refit' rows for 2019+),
 {tag}_{station}_meta.json (best epoch, threshold, history), {tag}_{station}.pt (weights).
 Torch is imported lazily so the torch-free parts (threshold picking, report) can be tested anywhere.
 """
@@ -18,8 +18,10 @@ import numpy as np
 import pandas as pd
 import eval_config as C
 from gru_data import make_splits, predictions_frame
-from evaluate import evaluate, common_rows
+from evaluate import evaluate, common_rows, pick_threshold
 from data_io import load_clean
+from shared_format import to_shared, save_model_preds
+from baselines import run as run_baselines, thr_of
 
 
 # ---------------------------------------------------------------- torch-free helpers
@@ -29,40 +31,20 @@ def pos_weight(y_spike, cap=10.0):
     return 1.0 if pos == 0 else float(min(np.sqrt(neg / pos), cap))
 
 
-def pick_threshold(y_spike, prob, beta=2.0):
-    """Probability cut-off maximising F-beta (beta=2 favours recall) on the given (2018) data.
-    Agree the rule with Person A so GRU / XGBoost / RF are compared under the same rule."""
-    y, p = np.asarray(y_spike).astype(bool), np.asarray(prob, float)
-    if y.sum() == 0:
-        return 0.5
-    best_t, best_f = 0.5, -1.0
-    for t in np.linspace(0.02, 0.98, 97):
-        a = p >= t
-        tp, fp, fn = (y & a).sum(), (~y & a).sum(), (y & ~a).sum()
-        if tp == 0:
-            continue
-        pr, rc = tp / (tp + fp), tp / (tp + fn)
-        f = (1 + beta ** 2) * pr * rc / (beta ** 2 * pr + rc)
-        if f > best_f:
-            best_t, best_f = float(t), float(f)
-    return best_t
-
-
-def report(clean, station, split, gru_frame, thr, out_dir, tag="gru"):
-    """Compare the GRU with the saved baselines on identical hours."""
-    preds, thrs = {tag: gru_frame}, {tag: thr}
-    for name in ("persistence", "hist_avg"):
-        path = os.path.join(out_dir, f"{name}_{split}.csv")
-        if os.path.exists(path):
-            b = pd.read_csv(path)
-            preds[name], thrs[name] = b[b["StationId"] == station], 0.5
-    aligned = common_rows(preds)
-    rows = []
-    for name, p in aligned.items():
-        r = evaluate(p, clean, prob_threshold=thrs[name])[station]
-        rows.append({"model": name, "station": station, **r})
+def report(clean, station, split, gru_frame, thr, tag="gru"):
+    """Compare the GRU with the baselines on identical rows. split='test' scores 2019 only."""
+    base, thrs = run_baselines(clean, final_test=(split == "test"))
+    frames, th = {tag: to_shared(gru_frame, clean, "x", thr)}, {tag: thr}
+    for name, p in base.items():
+        th[name] = thr_of(thrs, name, station)
+        frames[name] = to_shared(p[p["StationId"] == station], clean, "x", th[name])
+    if split == "test":
+        lo, hi = pd.Timestamp(C.TEST_START), pd.Timestamp(C.TEST_END)
+        frames = {k: v[(v["Datetime"] >= lo) & (v["Datetime"] <= hi)] for k, v in frames.items()}
+    rows = [{"model": k, "station": station, **evaluate(v, clean, prob_threshold=th[k])[station]}
+            for k, v in common_rows(frames).items()]
     cols = ["model", "station", "n", "MAE", "RMSE", "recall", "precision", "false_alarm_rate",
-            "n_episodes", "episode_recall", "mean_lead_h"]
+            "false_alert_runs_per_week", "n_episodes", "episode_recall"]
     return pd.DataFrame(rows)[cols].round(3)
 
 
@@ -163,7 +145,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--clean", default=str(C.FEATURES_PATH))
     ap.add_argument("--station", default=C.PRIMARY_STATION)
-    ap.add_argument("--out", default="preds")
+    ap.add_argument("--out", default=str(C.MODEL_DIR), help="folder for weights + meta json")
     ap.add_argument("--tag", default="gru")
     ap.add_argument("--final-test", action="store_true", help="refit 2015-18, score 2019 (touch once)")
     ap.add_argument("--lookback", type=int, default=24)
@@ -216,10 +198,12 @@ def main():
     r_s, prob = predict(model, ev["X"], dev)
     y_pred = np.clip(sc.inverse(r_s), 0, None)
     frame = predictions_frame(ev, a.station, y_pred, prob)
-    frame.to_csv(f"{stem}_{split}.csv", index=False)
+    label = "refit" if a.final_test else "train_only"
+    path = save_model_preds(to_shared(frame, clean, label, thr), a.tag, a.station)
+    print("saved", path)
     torch.save(model.state_dict(), stem + ".pt")
     print(f"alert threshold (from 2018): {thr:.2f}")
-    print(report(clean, a.station, split, frame, thr, a.out, a.tag).to_string(index=False))
+    print(report(clean, a.station, split, frame, thr, a.tag).to_string(index=False))
 
 
 if __name__ == "__main__":

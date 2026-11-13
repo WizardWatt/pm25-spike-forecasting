@@ -10,6 +10,9 @@ HORIZON = _c.HORIZON
 SPIKE_THRESHOLD = _c.THRESHOLD
 CLEAN_PATH = _c.CLEAN_PATH
 FEATURES_PATH = _c.FEATURES_PATH
+ROOT = _c.ROOT
+PRED_DIR = ROOT / "outputs" / "predictions"   # shared prediction files (same folder as A's xgb_*.csv)
+MODEL_DIR = ROOT / "outputs" / "models"
 
 
 def _last_hour_before(d):

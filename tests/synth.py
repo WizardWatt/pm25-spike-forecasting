@@ -13,3 +13,17 @@ def make_clean(station="KA003", seed=0, shift_2018=40.0):
     y_spike = (fmax > 90).astype(float).where(fmax.notna())
     return pd.DataFrame({"Datetime": idx, "StationId": station, "PM2.5": pm.values,
                          "y_reg": y_reg.values, "y_spike": y_spike.values})
+
+
+def make_features(station="KA003", seed=0):
+    """Shaped like A's features.csv: pm25_now, y_reg, y_spike, split, flags, model_ready, target_imputed."""
+    import config as cfg
+    d = make_clean(station, seed).rename(columns={"PM2.5": "pm25_now"})
+    t = d["Datetime"]
+    d["split"] = np.select([t < cfg.TRAIN_END, t < cfg.VAL_END, t < cfg.TEST_END], ["train", "val", "test"], "after_test")
+    d["is_diwali"] = False
+    d["is_lockdown"] = t >= cfg.LOCKDOWN_START
+    d["target_imputed"] = False
+    d["model_ready"] = d[["pm25_now", "y_reg", "y_spike"]].notna().all(axis=1)
+    d["pm25_lag1"] = d["pm25_now"].shift(1)
+    return d

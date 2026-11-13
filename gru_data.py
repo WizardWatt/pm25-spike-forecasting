@@ -74,11 +74,11 @@ def build_windows(hf, scaler, lookback=24, start=None, end=None, max_missing_fra
 
 def make_splits(clean, station, mode="val", lookback=24, max_missing_frac=0.25):
     """mode='val'  : scaler+train on 2015-17, eval on 2018   (all tuning happens here)
-       mode='test' : scaler+train on 2015-18, eval on 2019   (run once at the end)"""
+       mode='test' : scaler+train on 2015-18, eval on 2019 and later   (run once at the end)"""
     if mode == "val":
         fit_end, ev = C.TRAIN_END, (C.VAL_START, C.VAL_END)
     elif mode == "test":
-        fit_end, ev = C.REFIT_END, (C.TEST_START, C.TEST_END)
+        fit_end, ev = C.REFIT_END, (C.TEST_START, None)   # 2019 and later (2020 lockdown shift test)
     else:
         raise ValueError(mode)
     st = clean[clean["StationId"] == station]

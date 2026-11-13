@@ -2,8 +2,8 @@ import sys, os, tempfile; sys.path.insert(0, "."); sys.path.insert(0, "tests")
 import numpy as np, pandas as pd
 import eval_config as C
 from gru_data import make_splits, predictions_frame
-from train_gru import pick_threshold, pos_weight, report
-from baselines import load_clean, run
+from train_gru import pos_weight, report
+from evaluate import pick_threshold
 from synth import make_clean
 
 def test_all():
@@ -23,11 +23,8 @@ def test_all():
     fake_prob = np.clip(fake_pred / 180, 0, 1)
     frame = predictions_frame(ev, "KA003", fake_pred, fake_prob)
     assert list(frame.columns) == C.PRED_COLUMNS and len(frame) == len(ev["y_reg"])
-    with tempfile.TemporaryDirectory() as td:
-        for name, p in run(clean).items():
-            p.to_csv(os.path.join(td, f"{name}_val.csv"), index=False)
-        tab = report(clean, "KA003", "val", frame, 0.5, td)
-    assert set(tab["model"]) == {"gru", "persistence", "hist_avg"} and tab["n"].nunique() == 1
+    tab = report(clean, "KA003", "val", frame, 0.5)
+    assert set(tab["model"]) == {"gru", "persistence", "hist_avg", "naive_alarm"} and tab["n"].nunique() == 1
     print(tab.to_string(index=False))
 
 if __name__ == "__main__":

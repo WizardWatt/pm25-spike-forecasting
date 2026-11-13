@@ -1,0 +1,140 @@
+
+=== xgb KA003: scaled, alpha=0.1, calibrated on 6926 rows of 2018 -> C:\Users\nikhi\Documents\Engineering\Coding\Projects\sic_project_git\pm25-spike-forecasting\outputs\models\xgb_ci_KA003_conformal.json
+             set          group    n  coverage  mean_width
+2018 (in-sample)            all 6926     0.900      42.686
+2018 (in-sample)    truth <= 90 6790     0.915      42.315
+2018 (in-sample)     truth > 90  136     0.184      61.196
+2018 (in-sample)   forecast <30 4763     0.911      32.893
+2018 (in-sample) forecast 30-60 2065     0.874      62.491
+2018 (in-sample) forecast 60-90   97     0.928     100.845
+2018 (in-sample)  forecast >=90    1     0.000     143.113
+2018 (in-sample)      is_diwali  162     0.790      49.305
+2018 (in-sample)      split=val 6926     0.900      42.686
+       set            group    n  coverage  mean_width
+refit rows              all 9061     0.815      57.975
+refit rows      truth <= 90 8525     0.849      56.579
+refit rows       truth > 90  536     0.272      80.177
+refit rows     forecast <30 3394     0.805      32.534
+refit rows   forecast 30-60 4776     0.807      67.218
+refit rows   forecast 60-90  881     0.894     104.707
+refit rows    forecast >=90   10     0.700     160.582
+refit rows        is_diwali   65     0.938      62.637
+refit rows      is_lockdown 1429     0.973      29.105
+refit rows       split=test 6251     0.748      59.447
+refit rows split=after_test 2810     0.964      54.700
+
+=== xgb KA009: scaled, alpha=0.1, calibrated on 5827 rows of 2018 -> C:\Users\nikhi\Documents\Engineering\Coding\Projects\sic_project_git\pm25-spike-forecasting\outputs\models\xgb_ci_KA009_conformal.json
+             set          group    n  coverage  mean_width
+2018 (in-sample)            all 5827     0.900      47.501
+2018 (in-sample)    truth <= 90 5699     0.914      47.019
+2018 (in-sample)     truth > 90  128     0.297      68.942
+2018 (in-sample)   forecast <30 1892     0.871      29.126
+2018 (in-sample) forecast 30-60 3530     0.922      52.643
+2018 (in-sample) forecast 60-90  372     0.887      84.472
+2018 (in-sample)  forecast >=90   33     0.485     134.106
+2018 (in-sample)      is_diwali  169     0.811      42.948
+2018 (in-sample)      split=val 5827     0.900      47.501
+       set            group     n  coverage  mean_width
+refit rows              all 11062     0.930      51.204
+refit rows      truth <= 90 10723     0.944      50.110
+refit rows       truth > 90   339     0.487      85.819
+refit rows     forecast <30  2746     0.928      29.503
+refit rows   forecast 30-60  7160     0.938      52.998
+refit rows   forecast 60-90  1031     0.906      86.798
+refit rows    forecast >=90   122     0.754     134.866
+refit rows        is_diwali   169     0.959      31.239
+refit rows      is_lockdown  2052     0.926      42.738
+refit rows       split=test  7051     0.924      51.484
+refit rows split=after_test  4011     0.942      50.711
+
+=== gru KA003: scaled, alpha=0.1, calibrated on 7123 rows of 2018 -> C:\Users\nikhi\Documents\Engineering\Coding\Projects\sic_project_git\pm25-spike-forecasting\outputs\models\gru_ci_KA003_conformal.json
+             set          group    n  coverage  mean_width
+2018 (in-sample)            all 7123     0.900      43.920
+2018 (in-sample)    truth <= 90 6983     0.913      43.499
+2018 (in-sample)     truth > 90  140     0.286      64.936
+2018 (in-sample)   forecast <30 5109     0.905      33.211
+2018 (in-sample) forecast 30-60 1884     0.889      68.286
+2018 (in-sample) forecast 60-90  130     0.900     111.694
+2018 (in-sample)      is_diwali  162     0.840      54.161
+2018 (in-sample)      split=val 7123     0.900      43.920
+       set            group    n  coverage  mean_width
+refit rows              all 9687     0.833      60.176
+refit rows      truth <= 90 9091     0.863      58.354
+refit rows       truth > 90  596     0.388      87.975
+refit rows     forecast <30 4203     0.815      35.027
+refit rows   forecast 30-60 4731     0.835      74.004
+refit rows   forecast 60-90  753     0.924     113.673
+refit rows        is_diwali   79     0.886      48.296
+refit rows      is_lockdown 1474     0.974      29.974
+refit rows       split=test 6675     0.772      60.639
+refit rows split=after_test 3012     0.969      59.150
+
+=== gru KA009: scaled, alpha=0.1, calibrated on 5942 rows of 2018 -> C:\Users\nikhi\Documents\Engineering\Coding\Projects\sic_project_git\pm25-spike-forecasting\outputs\models\gru_ci_KA009_conformal.json
+             set          group    n  coverage  mean_width
+2018 (in-sample)            all 5942     0.900      45.580
+2018 (in-sample)    truth <= 90 5810     0.913      45.101
+2018 (in-sample)     truth > 90  132     0.333      66.657
+2018 (in-sample)   forecast <30 2766     0.868      30.359
+2018 (in-sample) forecast 30-60 2882     0.928      55.394
+2018 (in-sample) forecast 60-90  286     0.934      91.704
+2018 (in-sample)  forecast >=90    8     1.000     123.672
+2018 (in-sample)      is_diwali  169     0.852      46.747
+2018 (in-sample)      split=val 5942     0.900      45.580
+       set            group     n  coverage  mean_width
+refit rows              all 11282     0.941      52.654
+refit rows      truth <= 90 10941     0.951      51.327
+refit rows       truth > 90   341     0.625      95.226
+refit rows     forecast <30  3754     0.936      31.083
+refit rows   forecast 30-60  6273     0.944      56.522
+refit rows   forecast 60-90  1115     0.953      93.571
+refit rows    forecast >=90   140     0.879     131.897
+refit rows        is_diwali   169     0.964      34.204
+refit rows      is_lockdown  2066     0.938      42.045
+refit rows       split=test  7250     0.933      53.181
+refit rows split=after_test  4032     0.956      51.706
+
+=== rf KA003: scaled, alpha=0.1, calibrated on 6926 rows of 2018 -> C:\Users\nikhi\Documents\Engineering\Coding\Projects\sic_project_git\pm25-spike-forecasting\outputs\models\rf_ci_KA003_conformal.json
+             set          group    n  coverage  mean_width
+2018 (in-sample)            all 6926     0.900      43.772
+2018 (in-sample)    truth <= 90 6790     0.914      43.386
+2018 (in-sample)     truth > 90  136     0.213      63.047
+2018 (in-sample)   forecast <30 4529     0.911      32.579
+2018 (in-sample) forecast 30-60 2259     0.878      62.605
+2018 (in-sample) forecast 60-90  138     0.920     102.839
+2018 (in-sample)      is_diwali  162     0.796      51.543
+2018 (in-sample)      split=val 6926     0.900      43.772
+       set            group    n  coverage  mean_width
+refit rows              all 9061     0.824      59.785
+refit rows      truth <= 90 8525     0.853      58.266
+refit rows       truth > 90  536     0.349      83.949
+refit rows     forecast <30 3054     0.835      31.713
+refit rows   forecast 30-60 5094     0.799      68.737
+refit rows   forecast 60-90  913     0.921     103.746
+refit rows        is_diwali   65     0.862      59.529
+refit rows      is_lockdown 1429     0.971      29.270
+refit rows       split=test 6251     0.760      61.867
+refit rows split=after_test 2810     0.966      55.156
+
+=== rf KA009: scaled, alpha=0.1, calibrated on 5827 rows of 2018 -> C:\Users\nikhi\Documents\Engineering\Coding\Projects\sic_project_git\pm25-spike-forecasting\outputs\models\rf_ci_KA009_conformal.json
+             set          group    n  coverage  mean_width
+2018 (in-sample)            all 5827     0.900      46.154
+2018 (in-sample)    truth <= 90 5699     0.915      45.767
+2018 (in-sample)     truth > 90  128     0.258      63.374
+2018 (in-sample)   forecast <30 1864     0.876      28.814
+2018 (in-sample) forecast 30-60 3582     0.916      51.231
+2018 (in-sample) forecast 60-90  361     0.898      81.092
+2018 (in-sample)  forecast >=90   20     0.500     122.294
+2018 (in-sample)      is_diwali  169     0.805      41.610
+2018 (in-sample)      split=val 5827     0.900      46.154
+       set            group     n  coverage  mean_width
+refit rows              all 11062     0.935      49.673
+refit rows      truth <= 90 10723     0.951      48.665
+refit rows       truth > 90   339     0.440      81.549
+refit rows     forecast <30  2737     0.944      28.848
+refit rows   forecast 30-60  7052     0.940      51.327
+refit rows   forecast 60-90  1206     0.896      83.245
+refit rows    forecast >=90    67     0.791     121.925
+refit rows        is_diwali   169     0.953      29.169
+refit rows      is_lockdown  2052     0.938      41.547
+refit rows       split=test  7051     0.928      49.755
+refit rows split=after_test  4011     0.948      49.528

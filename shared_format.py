@@ -37,8 +37,9 @@ def save_model_preds(shared, name, station, out_dir=None):
     path = _path(name, station, out_dir)
     os.makedirs(os.path.dirname(path), exist_ok=True)
     if os.path.exists(path):
-        old = pd.read_csv(path)
+        old = pd.read_csv(path, parse_dates=["Datetime"])
         shared = pd.concat([old[~old["model"].isin(shared["model"].unique())], shared], ignore_index=True)
+    shared["Datetime"] = pd.to_datetime(shared["Datetime"])
     shared.sort_values("Datetime").to_csv(path, index=False)
     return path
 

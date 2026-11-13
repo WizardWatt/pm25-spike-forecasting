@@ -1,0 +1,4 @@
+station,model,onset,peak_time,peak_value,episode_hours,lead_h,warned_in_time,plot
+KA003,xgb_ci,2019-03-08 13:00:00,2019-03-08 13:00:00,954.9,4,6.0,True,alert_replay_KA003_xgb_ci_20190308_1300.png
+KA003,xgb_ci,2019-06-26 12:00:00,2019-06-26 14:00:00,762.0,4,,False,alert_replay_KA003_xgb_ci_20190626_1200.png
+KA003,xgb_ci,2019-10-04 20:00:00,2019-10-04 21:00:00,456.4,4,5.0,True,alert_replay_KA003_xgb_ci_20191004_2000.png

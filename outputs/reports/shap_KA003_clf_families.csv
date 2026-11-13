@@ -1,0 +1,10 @@
+family,mean_abs_shap,share
+rolling max,0.3899,0.273
+current level,0.3055,0.2139
+hour of day,0.2919,0.2044
+rolling std,0.1243,0.0871
+rolling mean,0.1181,0.0827
+season,0.0759,0.0532
+lags,0.0717,0.0502
+trend,0.0359,0.0252
+weekday,0.0147,0.0103

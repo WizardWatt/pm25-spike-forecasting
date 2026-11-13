@@ -1,0 +1,22 @@
+feature,family,mean_abs_shap,share
+pm25_max24,rolling max,0.3846,0.2693
+pm25_now,current level,0.3055,0.2139
+hour_sin,hour of day,0.1579,0.1106
+hour_cos,hour of day,0.134,0.0939
+pm25_mean24,rolling mean,0.1119,0.0783
+pm25_std6,rolling std,0.0707,0.0495
+month_cos,season,0.0578,0.0405
+pm25_std24,rolling std,0.0536,0.0376
+pm25_lag12,lags,0.0441,0.0309
+pm25_trend3,trend,0.0245,0.0172
+month_sin,season,0.0182,0.0127
+dayofweek,weekday,0.0147,0.0103
+pm25_trend6,trend,0.0114,0.008
+pm25_lag6,lags,0.0087,0.0061
+pm25_lag24,lags,0.0083,0.0058
+pm25_mean6,rolling mean,0.0063,0.0044
+pm25_max6,rolling max,0.0053,0.0037
+pm25_lag1,lags,0.0048,0.0034
+pm25_lag3,lags,0.0034,0.0024
+pm25_lag2,lags,0.0023,0.0016
+is_weekend,weekday,0.0,0.0

@@ -1,0 +1,11 @@
+station,model,window,vs,n,level_ratio,MAE_ratio,coverage_change,false_alarm_change
+KA003,gru_ci,Diwali 2018,rest of 2018 (no Diwali),162,1.258,1.492,-0.063,0.029
+KA003,hist_avg,Diwali 2018,rest of 2018 (no Diwali),162,1.258,1.165,,0.0
+KA003,naive_alarm,Diwali 2018,rest of 2018 (no Diwali),162,1.258,1.519,,0.024
+KA003,persistence,Diwali 2018,rest of 2018 (no Diwali),162,1.258,1.519,,0.017
+KA003,xgb_ci,Diwali 2018,rest of 2018 (no Diwali),162,1.258,1.559,-0.113,0.067
+KA009,gru_ci,Diwali 2018,rest of 2018 (no Diwali),169,0.85,1.152,-0.05,-0.037
+KA009,hist_avg,Diwali 2018,rest of 2018 (no Diwali),169,0.85,1.257,,-0.005
+KA009,naive_alarm,Diwali 2018,rest of 2018 (no Diwali),169,0.85,1.151,,-0.01
+KA009,persistence,Diwali 2018,rest of 2018 (no Diwali),169,0.85,1.151,,0.006
+KA009,xgb_ci,Diwali 2018,rest of 2018 (no Diwali),169,0.85,1.119,-0.092,0.021

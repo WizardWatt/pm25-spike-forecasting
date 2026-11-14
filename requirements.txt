@@ -6,3 +6,5 @@ xgboost
 shap
 torch
 pytest
+streamlit>=1.40
+plotly

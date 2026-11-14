@@ -1,10 +1,5 @@
+streamlit>=1.40
+plotly
 pandas
 numpy
 matplotlib
-scikit-learn
-xgboost
-shap
-torch
-pytest
-streamlit>=1.40
-plotly
